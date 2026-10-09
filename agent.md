@@ -217,6 +217,20 @@ class MyExtensionItem:
 
 ---
 
+## Configuration Management & Environment Variables
+
+Extensions declare typed settings in `config_declaration.yaml` and auto-register them using `@tk.blanket.config_declarations`.
+
+### Environment Variable Interpolation (`CKAN_` Prefix)
+* **Runtime Overrides**: Environment variables starting with `CKAN_` (e.g. `CKAN_MYEXT_API_KEY`) are registered into `ConfigParser` defaults at startup.
+* **`ckan.ini` Interpolation**: Reference environment variables in `ckan.ini` using standard `%(CKAN_VARIABLE_NAME)s` interpolation syntax:
+  ```ini
+  ckanext.myextension.api_key = %(CKAN_MYEXT_API_KEY)s
+  ```
+* **Automatic Core Mappings**: Core settings such as `CKAN_SQLALCHEMY_URL` (`sqlalchemy.url`), `CKAN_SITE_URL` (`ckan.site_url`), `CKAN_REDIS_URL` (`ckan.redis.url`), and `CKAN_SOLR_URL` (`solr_url`) are automatically mapped during startup without requiring explicit placeholders in `ckan.ini`.
+
+---
+
 ## Signals
 
 Signals implement the publisher-subscriber pattern. They notify observers of core events without modifying execution logic.
