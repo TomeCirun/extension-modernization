@@ -45,7 +45,7 @@ To test form submissions, send POST requests containing form data.
 
 ```python
 @pytest.mark.usefixtures("with_plugins", "clean_db")
-def test_item_create_submission(self, app: types.FixtureApp, user: dict[str, Any]):
+def test_item_create_submission(app: types.FixtureApp, user: dict[str, Any]):
     """Verify that posting form data creates a record."""
     form_data = {
         "name": "new-posted-item",
@@ -53,7 +53,7 @@ def test_item_create_submission(self, app: types.FixtureApp, user: dict[str, Any
     }
 
     # Authenticate the session
-    app.set_session_user(user)
+    app.set_session_user(user["name"])
 
     # Dispatch POST request simulating form submit
     response = app.post(
@@ -76,20 +76,20 @@ two primary methods to accomplish this:
 ### Session Authentication (`set_session_user`)
 
 The easiest way to simulate a logged-in user session is to call the
-`set_session_user()` method on the `app` client:
+`set_session_user()` method on the `app` client. It was added in CKAN v2.12;
+on v2.11 use token authentication described below.
 
 ```python
 @pytest.mark.usefixtures("with_plugins", "clean_db")
-def test_dashboard_authenticated(self, app, user):
+def test_dashboard_authenticated(app, user):
     app.set_session_user(user["name"])
 
-    response = app.get("/dashboard")
+    response = app.get("/dashboard/datasets")
     assert response.status_code == 200
-    assert f"Welcome, {user['name']}" in response.body
 
-    app.set_session_user()
+    app.set_session_user(None)
 
-    response = app.get("/dashboard", follow_redirects=False) # (1)!
+    response = app.get("/dashboard/datasets", follow_redirects=False) # (1)!
     assert response.status_code == 302
 ```
 
@@ -116,8 +116,8 @@ pass it inside the request's `headers` dictionary:
 
 ```python
 @pytest.mark.usefixtures("with_plugins", "clean_db")
-def test_api_view_with_token(self, app: types.FixtureApp, api_token: dict[str, Any]):
-    headers = {"Authorization": token["token"]}
+def test_api_view_with_token(app: types.FixtureApp, api_token: dict[str, Any]):
+    headers = {"Authorization": api_token["token"]}
 
     response = app.get(
         "/api/action/myextension_item_list",
@@ -176,8 +176,6 @@ def test_items_view_content(app):
     assert create_button is not None
     assert "Create item" in create_button.text.strip()
 ```
-
-!!! tip ""
 
 /// admonition | BeautifulSoup Best Practices
     type: tip

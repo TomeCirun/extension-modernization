@@ -86,6 +86,7 @@ While blanket auto-registration works for static configurations, you must manual
 
 ```python title="plugin.py"
 import os
+from typing import Any
 import yaml
 import ckan.plugins as p
 import ckan.plugins.toolkit as tk
@@ -155,9 +156,11 @@ you need to patch config during tests.
 
 ```py title="test_something.py"
 import pytest
-from ckanet.myextension import config
+from ckanext.myextension import config
 
 @pytest.mark.ckan_config(config.LIMIT_ITEMS, 42)
 def test_something():
     assert config.limit_items() == 42
 ```
+
+///
