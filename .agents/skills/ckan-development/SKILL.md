@@ -25,7 +25,7 @@ sections, not every guide in a category.
 | Tests, fixtures, factories, browser behavior | [ckan-testing](../ckan-testing/SKILL.md) |
 | Docker, Compose, container configuration | [ckan-docker-dev](../ckan-docker-dev/SKILL.md) |
 | Extension structure and registrations | [Overview](../../../docs/development/index.md), [plugins](../../../docs/development/defining-plugins.md) |
-| Configuration declarations or runtime options | [Configuration](../../../docs/development/config-management.md) |
+| Configuration declarations, runtime options, or environment variables | [Configuration](../../../docs/development/config-management.md) |
 | Blueprints or administrative commands | [Views](../../../docs/development/adding-views.md), [CLI](../../../docs/development/cli-commands.md), and the [thin-wrapper rule](../../../docs/development/index.md#the-feature-development-process): views and CLI call actions |
 | Event subscribers or template helpers | [Signals](../../../docs/development/signals.md), [helpers](../../../docs/development/template-helpers.md) |
 | Annotations or type-checker compatibility | [Typing](../../../docs/development/typing.md) |

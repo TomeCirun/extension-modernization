@@ -25,7 +25,8 @@ follow [Semantic Versioning](https://semver.org/).
   a session-start reminder to load the matching skill, even for small changes,
   and a git guard that lets read-only git commands through and holds back the
   rest (Claude Code asks first; Codex blocks them).
-- Claude `ckan-reviewer` agent for independent, read-only reviews.
+- A `ckan-reviewer` agent for Claude Code that runs the review in a separate,
+  read-only context (Codex uses its built-in subagents).
 - Agent plugin guide and validation scenarios in the documentation.
 - `make check`, which validates plugin files, skills, links, Python example
   syntax, and the documentation build, with pinned documentation dependencies.

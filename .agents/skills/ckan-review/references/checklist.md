@@ -60,9 +60,10 @@ versions.
 - **Fixture declarations**: `clean_db` or `with_plugins` requested as test
   arguments → suggest `@pytest.mark.usefixtures("with_plugins", "clean_db")`
   at class or module level. [Fixtures](../../../../docs/testing/fixtures.md)
-- **Test client logins**: authenticated view tests that edit cookies manually →
-  suggest `app.set_session_user(user["name"])` on CKAN 2.12+, or an
-  `Authorization` header with `api_token` on CKAN 2.11.
+- **Test client logins**: authenticated view tests that pass
+  `extra_environ={"REMOTE_USER": ...}` or edit cookies manually → suggest
+  `app.set_session_user(user["name"])` on CKAN 2.12+, or an `Authorization`
+  header with `api_token` on CKAN 2.11.
   [View authentication](../../../../docs/testing/views.md#authenticating-in-view-tests)
 - **Playwright scope**: backend logic, action validation, or plain redirects
   tested with Playwright → suggest standard pytest tests.
