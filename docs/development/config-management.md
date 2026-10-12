@@ -164,3 +164,47 @@ def test_something():
 ```
 
 ///
+
+---
+
+## Environment Variable Interpolation (`CKAN_` Prefix)
+
+CKAN's configuration loader automatically inspects system environment variables during startup. Any environment variable prefixed with `CKAN_` (e.g. `CKAN_MYEXT_API_KEY`, `CKAN_S3_BUCKET_NAME`) is registered into the config parser's defaults dictionary.
+
+### Interpolation Syntax in `ckan.ini`
+
+You can dynamically substitute environment variables inside `ckan.ini` using Python `ConfigParser` interpolation syntax: `%(CKAN_VARIABLE_NAME)s`.
+
+```ini title="ckan.ini"
+[app:main]
+# Standard configuration options
+ckan.site_url = http://localhost:5000
+
+# Interpolating custom extension settings from environment variables
+ckanext.myextension.api_key = %(CKAN_MYEXT_API_KEY)s
+ckanext.myextension.s3_bucket = %(CKAN_S3_BUCKET_NAME)s
+```
+
+When CKAN parses `ckan.ini`, `%(CKAN_MYEXT_API_KEY)s` is resolved to the runtime value of `os.environ["CKAN_MYEXT_API_KEY"]`.
+
+/// admonition | Docker & 12-Factor App Best Practices
+    type: tip
+
+Using `CKAN_` environment variable interpolation is the recommended pattern for 12-factor apps and Docker container deployments. It allows sensitive credentials (such as API tokens, database passwords, or secret keys) to be injected at container runtime without hardcoding secrets in version-controlled configuration files.
+
+Combine environment interpolation with default fallbacks in `config_declaration.yaml` to ensure your extension works out-of-the-box in local development environments.
+///
+
+### Automatic Core Environment Mappings
+
+In addition to custom interpolation in `ckan.ini`, CKAN automatically maps several core environment variables directly to config keys during startup without requiring explicit `%(...)s` entries:
+
+* `CKAN_SQLALCHEMY_URL` ➔ `sqlalchemy.url`
+* `CKAN_DATASTORE_WRITE_URL` ➔ `ckan.datastore.write_url`
+* `CKAN_DATASTORE_READ_URL` ➔ `ckan.datastore.read_url`
+* `CKAN_REDIS_URL` ➔ `ckan.redis.url`
+* `CKAN_SOLR_URL` ➔ `solr_url`
+* `CKAN_SITE_URL` ➔ `ckan.site_url`
+* `CKAN_STORAGE_PATH` ➔ `ckan.storage_path`
+* `CKAN_MAX_UPLOAD_SIZE_MB` ➔ `ckan.max_resource_size`
+* `CKAN_SMTP_SERVER` ➔ `smtp.server`

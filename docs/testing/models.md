@@ -66,7 +66,7 @@ foreign keys, verify that deletion cascades behave as expected:
 
 ```python
 @pytest.mark.usefixtures("with_plugins", "clean_db")
-def test_user_deletion_cascade(user):
+def test_user_deletion_cascade(self, user):
     """Verify that deleting a CKAN user cascades to custom model records."""
 
     # 1. Link custom model to user
